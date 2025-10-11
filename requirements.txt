@@ -121,3 +121,4 @@ feedparser
 imageio_ffmpeg
 celery
 celery[redis]
+flask_jwt_extended

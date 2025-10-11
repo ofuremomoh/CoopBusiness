@@ -438,7 +438,7 @@ import os
 PAYSTACK_BASE_URL = "https://api.paystack.co"
 
 headers = {
-    "Authorization": f"Bearer {PAYSTACK_SECRET_KEY}",
+    "Authorization": f"Bearer {PAYSTACK_SECRET}",
     "Content-Type": "application/json"
 }
 
