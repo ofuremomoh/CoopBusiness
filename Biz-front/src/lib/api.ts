@@ -1,4 +1,4 @@
-const API_BASE_URL = '';
+const API_BASE_URL = "https://business.gocoopsocial.com";
 
 // Token management
 const getToken = () => localStorage.getItem('token');
