@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv("PAYSTACK_SECRET")
 class Config:
     # Core App Settings
     SECRET_KEY = SECRET_KEY
-
+    
     SQLALCHEMY_DATABASE_URI = "postgresql://coop_business_user:b0btndMgU8Ji8p6bcAT3aryrzkf2kO4e@dpg-d3l5h5qdbo4c73ek27m0-a.oregon-postgres.render.com/coop_business"
     #SQLALCHEMY_DATABASE_URI = "postgresql://postgres:YardCore94!@localhost:5432/cobiz"
 

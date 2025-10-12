@@ -114,15 +114,15 @@ const Marketplace = () => {
                   <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-all group">
                     <div className="h-48 bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center overflow-hidden">
                                  {product.image_url ? (
-              <img
-  src={product.image_url ?? undefined}
-  alt={product.title}
-  className="w-full h-full object-cover"
-  onError={(e) => {
-    e.currentTarget.style.display = "none";
-    e.currentTarget.parentElement!.innerHTML = '<div class="text-8xl">📦</div>';
-  }}
-/>
+                  <img
+      src={product.image_url ?? undefined}
+      alt={product.title}
+      className="w-full h-full object-cover"
+      onError={(e) => {
+        e.currentTarget.style.display = "none";
+        e.currentTarget.parentElement!.innerHTML = '<div class="text-8xl">📦</div>';
+      }}
+    />
 
               ) : (
                 <div className="text-8xl">📦</div>

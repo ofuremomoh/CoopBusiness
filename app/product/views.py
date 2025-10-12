@@ -100,7 +100,6 @@ def add_product(user):
         subcategory=subcategory,
         image_url=image_url
     )
-
     db.session.add(product)
     db.session.commit()
 
@@ -402,15 +401,6 @@ def confirm_delivery(user, order_id):
 
 
 
-
-from flask import send_from_directory, current_app
-
-@product_bp.route("/uploads/<filename>")
-def serve_image(filename):
-    UPLOAD_FOLDER = current_app.config.get("UPLOAD_FOLDER")
-    return send_from_directory(UPLOAD_FOLDER, filename)
-
-
 @product_bp.route('/delete_post/<int:id>', methods=['DELETE'])
 @token_required
 def delete_post(user, id):
@@ -428,9 +418,6 @@ def delete_post(user, id):
     return jsonify({"message": "Post deleted successfully!"}), 200
 
     
-
-
-
 
 @product_bp.route('/delete_all_posts', methods=['GET','POST'])
 def delete_all_posts(user):

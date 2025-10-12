@@ -229,12 +229,9 @@ const AddProduct = () => {
                     <TabsList className="grid w-full grid-cols-2">
                       <TabsTrigger value="url">
                         <LinkIcon className="w-4 h-4 mr-2" />
-                        Image URL
+                        Image URL 1
                       </TabsTrigger>
-                      <TabsTrigger value="upload">
-                        <ImageIcon className="w-4 h-4 mr-2" />
-                        Upload Image
-                      </TabsTrigger>
+                        
                     </TabsList>
 
                     <TabsContent value="url" className="mt-4">
@@ -248,16 +245,6 @@ const AddProduct = () => {
                       />
                     </TabsContent>
 
-                    <TabsContent value="upload" className="mt-4">
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                      />
-                      <p className="text-sm text-muted-foreground mt-2">
-                        Upload an image file (JPG, PNG, WEBP)
-                      </p>
-                    </TabsContent>
                   </Tabs>
 
                   {formData.image_url && (
