@@ -433,7 +433,6 @@ def delete_post(user, id):
 
 
 @product_bp.route('/delete_all_posts', methods=['GET','POST'])
-@token_required
 def delete_all_posts(user):
 
 
