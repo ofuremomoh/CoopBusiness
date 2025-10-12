@@ -142,7 +142,20 @@ def create_app(config_class=Config):
 
     #CORS(app, resources={r"/*": {"origins": ["*", "http://localhost:8080/", "http://127.0.0.1:5000",]}}, supports_credentials=True)
     #CORS(app, supports_credentials=True)
-    CORS(app, origins=["http://localhost:8080"], supports_credentials=True)
+
+        
+    CORS(app, resources={
+        r"/*": {
+            "origins": [
+                "http://localhost:8080",       # Local React dev
+                "http://127.0.0.1:5000",       # Another possible local React URL
+                "https://feed.gocoopsocial.com",  # Your React frontend on Render
+                "https://www.business.gocoopsocial.com",  # If Render or DNS redirects www
+                "https://business.gocoopsocial.com",     # Your Flask backend domain
+            ]
+        }
+    }, supports_credentials=True)
+    
     app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 

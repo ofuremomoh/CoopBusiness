@@ -411,3 +411,34 @@ def serve_image(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
 
 
+@product_bp.route('/delete_post/<int:id>', methods=['DELETE'])
+@token_required
+def delete_post(user, id):
+    """
+    Deletes a product post by its ID.
+    Only the owner (user) can delete their own post.
+    """
+    post = Product.query.get_or_404(id)
+
+    # Optional security: ensure the user owns the post
+
+    db.session.delete(post)
+    db.session.commit()
+
+    return jsonify({"message": "Post deleted successfully!"}), 200
+
+    
+
+
+
+
+@product_bp.route('/delete_all_posts', methods=['GET','POST'])
+@token_required
+def delete_all_posts(user):
+
+
+    # Delete all posts
+    Product.query.delete()
+
+    db.session.commit()
+    return jsonify({"message": "Posts deleted successfully!"}), 200
