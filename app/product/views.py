@@ -40,55 +40,27 @@ def add_product(user):
     if not wallet:
         return jsonify({"error": "Wallet not found"}), 404
 
-    # JSON or multipart/form-data
-    if request.content_type.startswith("multipart/form-data"):
-        title = request.form.get("title")
-        description = request.form.get("description")
-        price = Decimal(request.form.get("price", "0"))
-        category = request.form.get("category")
-        subcategory = request.form.get("subcategory")
-        image_file = request.files.get("image_file")
-        image_data = request.form.get("image_url")  # base64 string if sent
-    else:
-        data = request.get_json() or {}
-        title = data.get("title")
-        description = data.get("description")
-        price = Decimal(str(data.get("price", 0)))
-        category = data.get("category")
-        subcategory = data.get("subcategory")
-        image_file = None
-        image_data = data.get("image_url")  # base64 string
+    # Always expect JSON data
+    data = request.get_json() or {}
+    title = data.get("title")
+    description = data.get("description")
+    price = Decimal(str(data.get("price", 0)))
+    category = data.get("category")
+    subcategory = data.get("subcategory")
+    image_url = data.get("image_url")  # now only image URL
 
+    # Validate price
     if price <= 0:
         return jsonify({"error": "Invalid price"}), 400
 
+    # Enforce wallet-based price limit
     limit = wallet.block_balance * 10
     if price > limit:
         return jsonify({"error": f"Price exceeds your sales limit (max ₦{limit})"}), 400
 
-    # Handle file upload or base64 image
-    image_url = None
-    
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-    
-
-    if image_file and allowed_file(image_file.filename):
-        # Multipart/form-data file upload
-        filename = secure_filename(image_file.filename)
-        unique_str = uuid.uuid4().hex
-        name, ext = os.path.splitext(filename)
-        filename = f"{name}_{unique_str}{ext}"
-        image_file.save(os.path.join(UPLOAD_FOLDER, filename))
-        image_url = filename
-    elif image_data and image_data.startswith("data:"):
-        # Base64 image sent as string
-        header, encoded = image_data.split(",", 1)
-        ext = header.split("/")[1].split(";")[0]  # png, jpeg etc.
-        unique_str = uuid.uuid4().hex
-        filename = f"{unique_str}.{ext}"
-        with open(os.path.join(UPLOAD_FOLDER, filename), "wb") as f:
-            f.write(base64.b64decode(encoded))
-        image_url = filename
+    # Ensure image URL is provided
+    if not image_url:
+        return jsonify({"error": "Image URL is required"}), 400
 
     # Create product
     product = Product(
@@ -98,8 +70,9 @@ def add_product(user):
         price=price,
         category=category,
         subcategory=subcategory,
-        image_url=image_url
+        image_url=image_url  # ✅ directly save image URL
     )
+
     db.session.add(product)
     db.session.commit()
 
@@ -108,7 +81,6 @@ def add_product(user):
         "product_id": product.id,
         "image_url": product.image_url
     }), 201
-
 
 # -----------------------------
 # Get all products or by category
@@ -126,9 +98,7 @@ def list_products():
 
     results = []
     for p in products:
-        # Construct full image URL if exists
-        image_url = f"{request.host_url.rstrip('/')}/api/uploads/{p.image_url}" if p.image_url else None
-
+ 
         results.append({
             "id": p.id,
             "title": p.title,
@@ -138,7 +108,7 @@ def list_products():
             "subcategory": p.subcategory,
             "seller_id": p.seller_id,
             "seller_name": p.seller.name if p.seller else "Unknown",
-            "image_url": image_url
+            "image_url": p.image_url
         })
 
     return jsonify(results)
@@ -155,9 +125,7 @@ def get_product(product_id):
         return jsonify({"error": "Product not found"}), 404
 
     # Construct full image URL if it exists
-    image_url = None
-    if product.image_url:
-        image_url = f"{request.host_url.rstrip('/')}/api/uploads/{product.image_url}"
+
 
     return jsonify({
         "id": product.id,
@@ -168,7 +136,7 @@ def get_product(product_id):
         "subcategory": product.subcategory,
         "seller_id": product.seller_id,
         "seller_name": product.seller.name if product.seller else "Unknown",
-        "image_url": image_url
+        "image_url": product.image_url
     })
 
 
@@ -400,8 +368,7 @@ def confirm_delivery(user, order_id):
 
 
 
-
-@product_bp.route('/delete_post/<int:id>', methods=['DELETE'])
+@product_bp.route('/delete_post/<int:id>', methods=['GET','POST'])
 @token_required
 def delete_post(user, id):
     """
@@ -419,7 +386,11 @@ def delete_post(user, id):
 
     
 
+
+
+
 @product_bp.route('/delete_all_posts', methods=['GET','POST'])
+@token_required
 def delete_all_posts(user):
 
 
