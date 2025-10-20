@@ -224,18 +224,12 @@ const OrderDetail = () => {
                           </div>
                         )}
                       </div>
-                           <div className="grid md:grid-cols-2 gap-4">
-              
-                
-              
-                </div>
-
                     </div>
                   </CardContent>
                 </Card>
 
                 {/* Actions */}
-                {isBuyer && order.status === "PENDING" && (
+                {isBuyer && order.status === "ESCROWED" && (
                   <Card>
                     <CardHeader>
                       <CardTitle>Buyer Actions</CardTitle>
@@ -314,13 +308,13 @@ const OrderDetail = () => {
                         </div>
                       </div>
 
-                      <div className={`flex items-center gap-3 ${order.status === 'PENDING' || order.status === 'COMPLETED' ? 'text-primary' : 'text-muted-foreground'}`}>
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${order.status === 'PENDING' || order.status === 'COMPLETED' ? 'bg-primary text-white' : 'bg-muted'}`}>
+                      <div className={`flex items-center gap-3 ${order.status === 'ESCROWED' || order.status === 'COMPLETED' ? 'text-primary' : 'text-muted-foreground'}`}>
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${order.status === 'ESCROWED' || order.status === 'COMPLETED' ? 'bg-primary text-white' : 'bg-muted'}`}>
                           <Package className="w-4 h-4" />
                         </div>
                         <div>
                           <p className="font-medium text-sm">In Transit</p>
-                          <p className="text-xs text-muted-foreground">Funds PENDING</p>
+                          <p className="text-xs text-muted-foreground">Funds escrowed</p>
                         </div>
                       </div>
 

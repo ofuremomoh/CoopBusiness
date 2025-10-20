@@ -263,6 +263,8 @@ def create_order(user):
     }), 201
 
 
+
+
 # ------------------ Step 2: Confirm Payment ------------------
 @product_bp.route("product/orders/<int:order_id>/payment_confirmed", methods=["POST"])
 @token_required
@@ -365,6 +367,8 @@ def confirm_delivery(user, order_id):
         "seller_block_deduction": str(reward),
         "order_status": "COMPLETED"
     }), 200
+
+
 
 
 

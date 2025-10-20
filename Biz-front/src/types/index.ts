@@ -5,7 +5,7 @@ export interface User {
   name: string;
   phone: string;
   user_type: UserType;
-  block_balance: string;
+  loyalty_balance: string;
   fiat_balance: string;
   referral_code?: string;
 }
@@ -13,14 +13,13 @@ export interface User {
 export interface Wallet {
   user_id: number;
   name: string;
-  block_balance: string;
+  loyalty_balance: string;
   fiat_balance: string;
   created_at: string;
   total_mined?: string;
   last_updated?: string;
-  paystack_bank_name: string;
-  paystack_dedicated_account: string;
-
+  paystack_dedicated_account?: string;
+  paystack_bank_name?: string;
 }
 
 export interface LedgerEntry {
@@ -105,7 +104,7 @@ export interface Bank {
   name: string;
 }
 
-export const INITIAL_BLOCKS: Record<UserType, number> = {
+export const INITIAL_LOYALTY: Record<UserType, number> = {
   individual: 100000,
   venture: 500000,
   company: 1000000,

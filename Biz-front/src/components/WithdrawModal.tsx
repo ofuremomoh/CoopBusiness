@@ -62,7 +62,10 @@ const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
   const verifyAccount = async () => {
     setIsVerifying(true);
     try {
-      const data = await api.verifyAccount(formData.bank_code, formData.account_number);
+      const data = await api.verifyAccount({ 
+        bank_code: formData.bank_code, 
+        account_number: formData.account_number 
+      });
       if (data.success) {
         setAccountName(data.account_name);
       } else {

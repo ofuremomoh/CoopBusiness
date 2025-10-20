@@ -46,12 +46,12 @@ const AddProduct = () => {
     }
 
     const fetchCategories = async () => {
-      try {
-        const data = await api.getCategories();
-        setCategories(data.categories);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
+      // Hardcoded categories
+      setCategories([
+        { name: "Electronics", subcategories: ["Phones", "Laptops", "Accessories"] },
+        { name: "Fashion", subcategories: ["Clothing", "Shoes", "Accessories"] },
+        { name: "Home & Garden", subcategories: ["Furniture", "Appliances", "Decor"] }
+      ]);
     };
 
     fetchCategories();
@@ -179,7 +179,7 @@ const AddProduct = () => {
                     required
                   />
                   <p className="text-sm text-muted-foreground mt-1">
-                    Maximum listing value: 10x your Block balance
+                    Maximum listing value: 10x your Loyalty balance
                   </p>
                 </div>
 
@@ -229,9 +229,12 @@ const AddProduct = () => {
                     <TabsList className="grid w-full grid-cols-2">
                       <TabsTrigger value="url">
                         <LinkIcon className="w-4 h-4 mr-2" />
-                        Image URL 1
+                        Image URL
                       </TabsTrigger>
-                        
+                      <TabsTrigger value="upload">
+                        <ImageIcon className="w-4 h-4 mr-2" />
+                        Upload Image
+                      </TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="url" className="mt-4">
@@ -245,6 +248,16 @@ const AddProduct = () => {
                       />
                     </TabsContent>
 
+                    <TabsContent value="upload" className="mt-4">
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                      />
+                      <p className="text-sm text-muted-foreground mt-2">
+                        Upload an image file (JPG, PNG, WEBP)
+                      </p>
+                    </TabsContent>
                   </Tabs>
 
                   {formData.image_url && (

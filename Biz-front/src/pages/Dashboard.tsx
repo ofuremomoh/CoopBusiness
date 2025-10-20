@@ -2,20 +2,20 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WithdrawModal from "@/components/WithdrawModal";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { api } from "@/lib/api";
-import { Wallet, LedgerEntry, INITIAL_BLOCKS } from "@/types";
-import { Wallet as WalletIcon, TrendingUp, History, Plus, ShoppingBag, ArrowRightLeft, Gift,Wallet2,Settings} from "lucide-react";
+import { Wallet, LedgerEntry, INITIAL_LOYALTY } from "@/types";
+import { Wallet as WalletIcon, TrendingUp, History, Plus, ShoppingBag, Gift, ArrowUpDown } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const Dashboard = () => {
   const [wallet, setWallet] = useState<Wallet | null>(null);
   const [ledger, setLedger] = useState<LedgerEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -70,12 +70,36 @@ const Dashboard = () => {
     );
   }
 
-  const blockBalance = parseFloat(wallet.block_balance);
+  const loyaltyBalance = parseFloat(wallet.loyalty_balance);
   const fiatBalance = parseFloat(wallet.fiat_balance);
-  //const bankName = wallet.paystack_bank_name;
-  //const accountNumber = wallet.paystack_dedicated_account;
+  const maxSalesPower = loyaltyBalance * 10;
 
-  const maxSalesPower = blockBalance * 10;
+  const handleTransferToFiat = async () => {
+    if (!loyaltyBalance || loyaltyBalance <= 0) {
+      toast({
+        title: "Error",
+        description: "No loyalty balance to transfer",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      await api.transferLoyaltyToFiat(loyaltyBalance);
+      const walletData = await api.getWallet();
+      setWallet(walletData);
+      toast({
+        title: "Success",
+        description: `Transferred ₦${loyaltyBalance.toLocaleString()} to your fiat wallet`
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to transfer loyalty balance",
+        variant: "destructive"
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -94,15 +118,24 @@ const Dashboard = () => {
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
                   <WalletIcon className="w-6 h-6 text-primary" />
                 </div>
-                <Badge variant="outline">Block Balance</Badge>
+                <Badge variant="outline">Loyalty Balance</Badge>
               </div>
               <div>
                 <p className="text-3xl font-bold mb-1">
-                  ₦{blockBalance.toLocaleString()}
+                  ₦{loyaltyBalance.toLocaleString()}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  Available Blocks
+                  Available Loyalty Points
                 </p>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="mt-3"
+                  onClick={handleTransferToFiat}
+                >
+                  <ArrowUpDown className="w-4 h-4 mr-2" />
+                  Transfer to Fiat
+                </Button>
               </div>
             </Card>
 
@@ -135,10 +168,15 @@ const Dashboard = () => {
                   ₦{fiatBalance.toLocaleString()}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                 <span> Bank:{wallet.paystack_bank_name} </span> 
-
-                  <span>Account:{wallet.paystack_dedicated_account}</span> 
+                  Available cash
                 </p>
+                {wallet.paystack_dedicated_account && (
+                  <div className="mt-3 pt-3 border-t border-accent/20">
+                    <p className="text-xs text-muted-foreground mb-1">Fund your wallet via:</p>
+                    <p className="text-sm font-semibold">{wallet.paystack_bank_name}</p>
+                    <p className="text-sm font-mono">{wallet.paystack_dedicated_account}</p>
+                  </div>
+                )}
               </div>
             </Card>
           </div>
@@ -165,14 +203,6 @@ const Dashboard = () => {
                 <span>Browse Marketplace</span>
               </Button>
               
-              <Button 
-                variant="secondary" 
-                className="h-auto py-4 flex-col"
-                onClick={() => navigate("/exchange")}
-              >
-                <ArrowRightLeft className="w-6 h-6 mb-2" />
-                <span>Trade Blocks</span>
-              </Button>
               
               <Button 
                 variant="outline" 
@@ -200,31 +230,6 @@ const Dashboard = () => {
                 <Gift className="w-6 h-6 mb-2" />
                 <span>Referrals</span>
               </Button>
-
-                    <Button 
-        variant="outline" 
-        className="h-auto py-4 flex-col"
-        onClick={() => navigate("/settings")} // 👈 Navigate to Settings page
-      >
-        <Settings className="w-6 h-6 mb-2" />
-        <span>Edit Account</span>
-      </Button>
-
-
-              <Button
-            variant="outline"
-            className="h-auto py-4 flex-col"
-            onClick={() => setIsWithdrawOpen(true)} // 👈 Opens the modal
-          >
-            <Wallet2 className="w-6 h-6 mb-2" />
-            <span>Withdraw</span>
-          </Button>
-
-          {/* Withdraw Modal */}
-          <WithdrawModal
-            isOpen={isWithdrawOpen}
-            onClose={() => setIsWithdrawOpen(false)} // 👈 Closes the modal
-          />
             </div>
           </Card>
 
@@ -232,7 +237,7 @@ const Dashboard = () => {
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
               <History className="w-5 h-5" />
-              Block Transaction History
+              Loyalty Transaction History
             </h2>
             
             {ledger.length === 0 ? (

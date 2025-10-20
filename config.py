@@ -22,7 +22,7 @@ SQLALCHEMY_ENGINE_OPTIONS = {
 
 from dotenv import load_dotenv
 
-load_dotenv()  # loads variables from .env file into environment
+load_dotenv()  
 
 SECRET_KEY = os.getenv("PAYSTACK_SECRET")
 

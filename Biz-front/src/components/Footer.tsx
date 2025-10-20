@@ -32,7 +32,6 @@ const Footer = () => {
             <h3 className="font-semibold mb-4">Resources</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>How It Works</li>
-              <li>Block Exchange</li>
               <li>FAQs</li>
               <li>Support</li>
             </ul>

@@ -33,18 +33,22 @@ const Referrals = () => {
 
   const fetchReferralData = async () => {
     try {
-      const [codeResponse, referralsResponse, rewardsResponse] = await Promise.all([
-        api.generateReferralCode(),
-        api.getMyReferrals(),
-        api.getReferralRewards(),
-      ]);
-
-      if (codeResponse.code) {
-        setReferralCode(codeResponse.code);
+      const referralsResponse = await api.getReferrals();
+      
+      // Assuming the response has a referral_code property
+      if (referralsResponse.referral_code) {
+        setReferralCode(referralsResponse.referral_code);
       }
       
-      setReferrals(referralsResponse);
-      setRewards(rewardsResponse);
+      // Set referrals if available
+      if (referralsResponse.referrals) {
+        setReferrals(referralsResponse.referrals);
+      }
+      
+      // Calculate rewards from referrals
+      if (referralsResponse.total_rewards) {
+        setRewards(referralsResponse.total_rewards);
+      }
     } catch (error) {
       toast({
         title: "Error",
@@ -59,9 +63,11 @@ const Referrals = () => {
   const handleGenerateCode = async () => {
     setIsGenerating(true);
     try {
-      const response = await api.generateReferralCode();
-      if (response.code) {
-        setReferralCode(response.code);
+      // Since there's no separate generateReferralCode endpoint,
+      // we'll just fetch referrals again which should include the code
+      const response = await api.getReferrals();
+      if (response.referral_code) {
+        setReferralCode(response.referral_code);
         toast({
           title: "Referral Code Generated!",
           description: "Share your code with friends to earn rewards.",

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, TrendingUp, Users, Blocks } from "lucide-react";
+import { ArrowRight, TrendingUp, Users, Award } from "lucide-react";
 import heroImage from "@/assets/hero-marketplace.jpg";
 
 const HeroSection = () => {
@@ -15,7 +15,7 @@ const HeroSection = () => {
       <div className="relative container mx-auto px-4 py-20">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-4">
-            <Blocks className="w-4 h-4 text-primary" />
+            <Award className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium text-primary">Building Nigeria's Economic Future</span>
           </div>
           
@@ -27,9 +27,9 @@ const HeroSection = () => {
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            <strong className="text-foreground">Buyers:</strong> Earn 20% Block rewards on every purchase. Trade earned Blocks for instant cash.
+            <strong className="text-foreground">Buyers:</strong> Earn 20% Loyalty rewards on every purchase. Transfer earned Loyalty to cash instantly.
             <br />
-            <strong className="text-foreground">Sellers:</strong> List products up to 10x your Block balance. Buy Blocks to sell more.
+            <strong className="text-foreground">Sellers:</strong> List products up to 10x your Loyalty balance. Earn more to sell more.
           </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto mt-12">
@@ -38,7 +38,7 @@ const HeroSection = () => {
                 <Users className="w-6 h-6 text-primary" />
               </div>
               <h3 className="font-semibold text-lg mb-2">₦100k - ₦1M</h3>
-              <p className="text-sm text-muted-foreground">Initial Block allocation based on account type</p>
+              <p className="text-sm text-muted-foreground">Initial Loyalty allocation based on account type</p>
             </div>
             
             <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 hover:shadow-lg transition-all">
@@ -46,23 +46,23 @@ const HeroSection = () => {
                 <TrendingUp className="w-6 h-6 text-secondary" />
               </div>
               <h3 className="font-semibold text-lg mb-2">20% Rewards</h3>
-              <p className="text-sm text-muted-foreground">Buyers earn 20% Block value on every purchase</p>
+              <p className="text-sm text-muted-foreground">Buyers earn 20% Loyalty value on every purchase</p>
             </div>
             
             <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 hover:shadow-lg transition-all">
               <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4 mx-auto">
-                <Blocks className="w-6 h-6 text-accent" />
+                <Award className="w-6 h-6 text-accent" />
               </div>
               <h3 className="font-semibold text-lg mb-2">10x Sales Power</h3>
-              <p className="text-sm text-muted-foreground">Sell up to 10x your Block balance</p>
+              <p className="text-sm text-muted-foreground">Sell up to 10x your Loyalty balance</p>
             </div>
 
             <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6 hover:shadow-lg transition-all">
               <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 mx-auto">
                 <TrendingUp className="w-6 h-6 text-primary" />
               </div>
-              <h3 className="font-semibold text-lg mb-2">Buy Blocks to Sell More</h3>
-              <p className="text-sm text-muted-foreground">Purchase Blocks from buyers to boost your sales capacity</p>
+              <h3 className="font-semibold text-lg mb-2">Earn to Sell More</h3>
+              <p className="text-sm text-muted-foreground">Make purchases to earn Loyalty and boost sales capacity</p>
             </div>
           </div>
 

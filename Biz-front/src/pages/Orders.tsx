@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Package, CheckCircle2, XCircle, Clock } from "lucide-react";
+import { Loader2, Package, CheckCircle2, XCircle, Clock, ShoppingCart } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -137,6 +137,10 @@ const Orders = () => {
     );
   }
 
+  const currentUserId = JSON.parse(localStorage.getItem("user") || "{}").id;
+  const buyerOrders = orders.filter(order => order.buyer_id === currentUserId);
+  const sellerOrders = orders.filter(order => order.seller_id === currentUserId);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -160,97 +164,165 @@ const Orders = () => {
               </CardContent>
             </Card>
           ) : (
-            <div className="space-y-4">
-              {orders.map((order) => (
-                <Card 
-                  key={order.id} 
-                  className="cursor-pointer hover:shadow-lg transition-all"
-                  onClick={() => navigate(`/order/${order.id}`)}
-                >
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <CardTitle className="text-xl">
-                          {order.product_name || `Order #${order.id}`}
-                        </CardTitle>
-                        <CardDescription>
-                          Order ID: {order.id} • {new Date(order.created_at).toLocaleDateString()}
-                        </CardDescription>
-                      </div>
-                      {getStatusBadge(order.status)}
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid md:grid-cols-2 gap-4 mb-4">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Total Price</p>
-                        <p className="text-lg font-semibold">
-                          ₦{order.total_price.toLocaleString()}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Status</p>
-                        <p className="text-lg font-semibold capitalize">
-                          {order.status.toLowerCase()}
-                        </p>
-                      </div>
-                    </div>
-
-                    {order.status === "ESCROWED" && (
-                      <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
-                        <Button
-                          onClick={() => handleConfirmDelivery(order.id)}
-                          disabled={actionLoading === order.id}
-                          className="flex-1"
-                        >
-                          {actionLoading === order.id ? (
-                            <>
-                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                              Processing...
-                            </>
-                          ) : (
-                            <>
-                              <CheckCircle2 className="mr-2 h-4 w-4" />
-                              Confirm Delivery
-                            </>
-                          )}
-                        </Button>
-                      </div>
-                    )}
-
-                    {order.status === "PENDING" && (
-                      <div onClick={(e) => e.stopPropagation()}>
-                        <Button
-                          variant="destructive"
-                          onClick={() => handleCancelOrder(order.id)}
-                        disabled={actionLoading === order.id}
+            <>
+              {/* Buyer Orders Section */}
+              {buyerOrders.length > 0 && (
+                <div className="mb-8">
+                  <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
+                    <ShoppingCart className="w-6 h-6" />
+                    My Purchases
+                  </h2>
+                  <div className="space-y-4">
+                    {buyerOrders.map((order) => (
+                      <Card 
+                        key={order.id} 
+                        className="cursor-pointer hover:shadow-lg transition-all"
+                        onClick={() => navigate(`/order/${order.id}`)}
                       >
-                        {actionLoading === order.id ? (
-                          <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Canceling...
-                          </>
-                        ) : (
-                          <>
-                            <XCircle className="mr-2 h-4 w-4" />
-                            Cancel Order
-                          </>
-                        )}
-                      </Button>
-                      </div>
-                    )}
+                        <CardHeader>
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <CardTitle className="text-xl">
+                                {order.product_name || `Order #${order.id}`}
+                              </CardTitle>
+                              <CardDescription>
+                                Order ID: {order.id} • {new Date(order.created_at).toLocaleDateString()}
+                              </CardDescription>
+                            </div>
+                            {getStatusBadge(order.status)}
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="grid md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                              <p className="text-sm text-muted-foreground">Total Price</p>
+                              <p className="text-lg font-semibold">
+                                ₦{order.total_price.toLocaleString()}
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-sm text-muted-foreground">Status</p>
+                              <p className="text-lg font-semibold capitalize">
+                                {order.status.toLowerCase()}
+                              </p>
+                            </div>
+                          </div>
 
-                    {order.status === "COMPLETED" && (
-                      <div className="bg-secondary/10 border border-secondary/20 rounded-lg p-4">
-                        <p className="text-sm text-muted-foreground">
-                          ✅ Order completed! You earned 20% Block rewards on this purchase.
-                        </p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                          {order.status === "ESCROWED" && (
+                            <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+                              <Button
+                                onClick={() => handleConfirmDelivery(order.id)}
+                                disabled={actionLoading === order.id}
+                                className="flex-1"
+                              >
+                                {actionLoading === order.id ? (
+                                  <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Processing...
+                                  </>
+                                ) : (
+                                  <>
+                                    <CheckCircle2 className="mr-2 h-4 w-4" />
+                                    Confirm Delivery
+                                  </>
+                                )}
+                              </Button>
+                            </div>
+                          )}
+
+                          {order.status === "PENDING" && (
+                            <div onClick={(e) => e.stopPropagation()}>
+                              <Button
+                                variant="destructive"
+                                onClick={() => handleCancelOrder(order.id)}
+                                disabled={actionLoading === order.id}
+                              >
+                                {actionLoading === order.id ? (
+                                  <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Canceling...
+                                  </>
+                                ) : (
+                                  <>
+                                    <XCircle className="mr-2 h-4 w-4" />
+                                    Cancel Order
+                                  </>
+                                )}
+                              </Button>
+                            </div>
+                          )}
+
+                          {order.status === "COMPLETED" && (
+                            <div className="bg-secondary/10 border border-secondary/20 rounded-lg p-4">
+                              <p className="text-sm text-muted-foreground">
+                                ✅ Order completed! You earned 10% Loyalty rewards on this purchase.
+                              </p>
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Seller Orders Section */}
+              {sellerOrders.length > 0 && (
+                <div>
+                  <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
+                    <Package className="w-6 h-6" />
+                    My Sales
+                  </h2>
+                  <div className="space-y-4">
+                    {sellerOrders.map((order) => (
+                      <Card 
+                        key={order.id} 
+                        className="cursor-pointer hover:shadow-lg transition-all"
+                        onClick={() => navigate(`/order/${order.id}`)}
+                      >
+                        <CardHeader>
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <CardTitle className="text-xl">
+                                {order.product_name || `Order #${order.id}`}
+                              </CardTitle>
+                              <CardDescription>
+                                Order ID: {order.id} • {new Date(order.created_at).toLocaleDateString()}
+                              </CardDescription>
+                            </div>
+                            {getStatusBadge(order.status)}
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="grid md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                              <p className="text-sm text-muted-foreground">Total Price</p>
+                              <p className="text-lg font-semibold">
+                                ₦{order.total_price.toLocaleString()}
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-sm text-muted-foreground">Status</p>
+                              <p className="text-lg font-semibold capitalize">
+                                {order.status.toLowerCase()}
+                              </p>
+                            </div>
+                          </div>
+
+                          {order.status === "COMPLETED" && (
+                            <div className="bg-secondary/10 border border-secondary/20 rounded-lg p-4">
+                              <p className="text-sm text-muted-foreground">
+                                ✅ Sale completed successfully!
+                              </p>
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

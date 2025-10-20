@@ -7,11 +7,11 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { INITIAL_BLOCKS, USER_TYPE_LABELS } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { Blocks, Loader2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { INITIAL_LOYALTY, USER_TYPE_LABELS } from "@/types";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ const Register = () => {
   setIsLoading(true);
 
   try {
-    const response = await fetch("/api/register", {
+    const response = await fetch("http://127.0.0.1:5000/api/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -164,7 +164,7 @@ const Register = () => {
                   value={formData.user_type}
                   onValueChange={(value) => setFormData({ ...formData, user_type: value })}
                 >
-                  {Object.entries(INITIAL_BLOCKS).map(([type, blocks]) => (
+                  {Object.entries(INITIAL_LOYALTY).map(([type, loyalty]) => (
                     <div
                       key={type}
                       className="flex items-center space-x-3 p-4 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer"
@@ -174,7 +174,7 @@ const Register = () => {
                         <div className="flex items-center justify-between">
                           <span className="font-semibold">{USER_TYPE_LABELS[type as keyof typeof USER_TYPE_LABELS]}</span>
                           <Badge variant="secondary">
-                            {blocks.toLocaleString()} Blocks
+                            {loyalty.toLocaleString()} Loyalty Points
                           </Badge>
                         </div>
                       </Label>
@@ -184,12 +184,12 @@ const Register = () => {
               </div>
 
               <div className="bg-muted/50 border border-border rounded-lg p-4 space-y-2 text-sm">
-                <p className="font-semibold">Initial Block Allocation Benefits:</p>
+                <p className="font-semibold">Loyalty Rewards Benefits:</p>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• Create sales up to 10x your Block value</li>
-                  <li>• Earn 20% Blocks on all purchases</li>
-                  <li>• Initial allocation unlocks after 10x purchase value</li>
-                  <li>• All earned Blocks tradeable immediately</li>
+                  <li>• Create sales up to 10x your Loyalty value</li>
+                  <li>• Earn 20% Loyalty on all purchases</li>
+                  <li>• Loyalty points are tradeable and withdrawable</li>
+                  <li>• All earned Loyalty available immediately</li>
                 </ul>
               </div>
 

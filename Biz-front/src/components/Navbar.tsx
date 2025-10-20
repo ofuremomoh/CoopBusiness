@@ -9,9 +9,10 @@ const Navbar = () => {
 
   const navItems = [
     { label: "Marketplace", path: "/marketplace" },
-    { label: "Exchange", path: "/exchange" },
     { label: "Add Product", path: "/add-product" },
     { label: "Notifications", path: "/notifications" },
+    { label: "Track Driver", path: "/driver-tracking/1" },
+    { label: "Driver Dashboard", path: "/driver-dashboard" },
     { label: "Dashboard", path: "/dashboard" },
   ];
 

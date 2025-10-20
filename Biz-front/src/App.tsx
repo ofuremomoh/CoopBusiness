@@ -13,7 +13,6 @@ import Register from "./pages/Register";
 import Marketplace from "./pages/Marketplace";
 import ProductDetail from "./pages/ProductDetail";
 import Dashboard from "./pages/Dashboard";
-import Exchange from "./pages/Exchange";
 import Orders from "./pages/Orders";
 import OrderDetail from "./pages/OrderDetail";
 import Referrals from "./pages/Referrals";
@@ -21,6 +20,8 @@ import AddProduct from "./pages/AddProduct";
 import Notifications from "./pages/Notifications";
 import Transactions from "./pages/Transactions";
 import Settings from "./pages/Settings";
+import DriverTracking from "./pages/DriverTracking";
+import DriverDashboard from "./pages/DriverDashboard";
 import NotFound from "./pages/NotFound";
 
 
@@ -71,14 +72,6 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/exchange"
-              element={
-                <ProtectedRoute>
-                  <Exchange />
                 </ProtectedRoute>
               }
             />
@@ -135,6 +128,22 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <AddProduct />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/driver-tracking/:orderId"
+              element={
+                <ProtectedRoute>
+                  <DriverTracking />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/driver-dashboard"
+              element={
+                <ProtectedRoute>
+                  <DriverDashboard />
                 </ProtectedRoute>
               }
             />

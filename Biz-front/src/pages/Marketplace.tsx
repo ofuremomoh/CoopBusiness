@@ -20,7 +20,7 @@ import {
 const Marketplace = () => {
   const [searchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>(
     searchParams.get("category") || "all"
   );
@@ -30,11 +30,23 @@ const Marketplace = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [categoriesData, productsData] = await Promise.all([
-          api.getCategories(),
-          api.getProducts(selectedCategory !== "all" ? selectedCategory : undefined),
-        ]);
-        setCategories(categoriesData.categories);
+        const productsData = await api.getProducts(selectedCategory !== "all" ? selectedCategory : undefined);
+        
+        // Hardcoded categories since backend doesn't provide them
+        const hardcodedCategories = [
+          "Electronics",
+          "Fashion",
+          "Home & Garden",
+          "Sports",
+          "Books",
+          "Toys",
+          "Food & Beverages",
+          "Health & Beauty",
+          "Automotive",
+          "Other"
+        ];
+        
+        setCategories(hardcodedCategories);
         setProducts(productsData);
       } catch (error) {
         console.error("Error fetching marketplace data:", error);
@@ -60,7 +72,7 @@ const Marketplace = () => {
           <div className="container mx-auto px-4">
             <h1 className="text-4xl font-bold mb-4">Marketplace</h1>
             <p className="text-xl text-muted-foreground mb-6">
-              Browse products and earn 20% Block rewards on every purchase
+              Browse products and earn 20% Loyalty rewards on every purchase
             </p>
 
             <div className="flex flex-col md:flex-row gap-4 max-w-4xl">
@@ -82,8 +94,8 @@ const Marketplace = () => {
                 <SelectContent>
                   <SelectItem value="all">All Categories</SelectItem>
                   {categories.map((category) => (
-                    <SelectItem key={category.name} value={category.name}>
-                      {category.name}
+                    <SelectItem key={category} value={category}>
+                      {category}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -114,15 +126,15 @@ const Marketplace = () => {
                   <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-all group">
                     <div className="h-48 bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center overflow-hidden">
                                  {product.image_url ? (
-                  <img
-      src={product.image_url ?? undefined}
-      alt={product.title}
-      className="w-full h-full object-cover"
-      onError={(e) => {
-        e.currentTarget.style.display = "none";
-        e.currentTarget.parentElement!.innerHTML = '<div class="text-8xl">📦</div>';
-      }}
-    />
+              <img
+  src={product.image_url ?? undefined}
+  alt={product.title}
+  className="w-full h-full object-cover"
+  onError={(e) => {
+    e.currentTarget.style.display = "none";
+    e.currentTarget.parentElement!.innerHTML = '<div class="text-8xl">📦</div>';
+  }}
+/>
 
               ) : (
                 <div className="text-8xl">📦</div>
@@ -149,7 +161,7 @@ const Marketplace = () => {
                             ₦{price.toLocaleString()}
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            Earn ₦{blockReward.toLocaleString()} Blocks
+                            Earn ₦{blockReward.toLocaleString()} Loyalty
                           </p>
                         </div>
                       </div>
