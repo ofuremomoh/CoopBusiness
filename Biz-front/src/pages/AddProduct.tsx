@@ -45,12 +45,92 @@ const AddProduct = () => {
       return;
     }
 
+
+
     const fetchCategories = async () => {
       // Hardcoded categories
       setCategories([
-        { name: "Electronics", subcategories: ["Phones", "Laptops", "Accessories"] },
-        { name: "Fashion", subcategories: ["Clothing", "Shoes", "Accessories"] },
-        { name: "Home & Garden", subcategories: ["Furniture", "Appliances", "Decor"] }
+          {
+    name: 'Raw Materials',
+    subcategories: [
+      'Agricultural Produce',
+      'Minerals & Natural Stones',
+      'Chemicals & Dyes',
+      'Industrial Oils & Lubricants',
+      'Scraps & Recyclables'
+    ]
+  },
+    {
+    name: 'Intermediate Goods',
+    subcategories: [
+      'Building Materials',
+      'Metals & Alloys',
+      'Rubber & Plastic Components',
+      'Wood & Furniture Parts',
+      'Textile & Leather Materials',
+      'Electrical Components',
+      'Machined Parts & Tools'
+    ]
+  },
+
+  {
+    name: 'Technology & Equipment',
+    subcategories: [
+      'Fabrication Machines',
+      'Industrial Tools',
+      'Electronics & Circuit Boards',
+      'Engines & Motors',
+      'Power & Energy Equipment',
+      'ICT Devices & Peripherals',
+      'Automation & Robotics',
+      'Repair Tools & Accessories'
+    ]
+  },
+  {
+    name: 'Consumables',
+    subcategories: [
+      'Kitchen & Food Supplies',
+      'Toiletries & Sanitation',
+      'Paper & Stationery',
+      'Beauty & Personal Care',
+      'Plastic & Packaging Materials',
+      'Home & Living Essentials',
+      'Healthcare & Sanitary Products',
+      'Others'
+    ]
+  },
+   {
+    name: 'Supplies',
+    subcategories: [
+      'Office Supplies',
+      'School Supplies',
+      'Workshop & Craft Supplies',
+      'Agricultural Supplies',
+      'Industrial Maintenance Items'
+    ]
+  },
+    {
+    name: 'Fashion & Clothing',
+    subcategories: [
+      'Equipment & Sewing Tools',
+      'Fabrics & Materials',
+      'Footwear & Leatherworks',
+      'Accessories & Ornaments',
+      'Ready-to-Wear Items'
+    ]
+  },
+
+    {
+    name: 'Services',
+    subcategories: [
+      'Fabrication & Repair',
+      'Printing & Packaging',
+      'Delivery & Logistics',
+      'Design & Branding',
+      'Installation & Maintenance',
+      'Training & Consultancy'
+    ]
+  }
       ]);
     };
 

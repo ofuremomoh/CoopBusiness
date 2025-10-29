@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,7 +9,6 @@ import { Blocks, Loader2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-
 const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -19,58 +17,86 @@ const Login = () => {
     phone: "",
     password: "",
   });
+  const [phoneError, setPhoneError] = useState("");
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setIsLoading(true);
+  // ✅ Phone format validator
+  const validatePhone = (phone) => {
+    const pattern = /^\+234[0-9]{10}$/;
+    return pattern.test(phone);
+  };
 
-  try {
-    const response = await fetch("/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        phone: formData.phone,
-        password: formData.password,
-      }),
-    });
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    setFormData({ ...formData, phone: value });
 
-    const data = await response.json();
-
-    if (response.ok && data.user) {
-      // ✅ Store user + token
-      localStorage.setItem("user", JSON.stringify(data.user));
-      localStorage.setItem("token", data.token);
-
-      toast({
-        title: "Welcome back!",
-        description: "You have successfully logged in.",
-      });
-
-      // ✅ Smooth navigation using React Router instead of full reload
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 800);
+    if (value === "") {
+      setPhoneError("Phone number is required");
+    } else if (!validatePhone(value)) {
+      setPhoneError("Enter a valid number e.g. +2348123456789");
     } else {
+      setPhoneError("");
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // ✅ Validate phone before making API call
+    if (!validatePhone(formData.phone)) {
       toast({
-        title: "Login Failed",
-        description: data.error || "Invalid credentials",
+        title: "Invalid Phone Number",
+        description: "Phone number must be in the format +234XXXXXXXXXX.",
         variant: "destructive",
       });
+      return;
     }
-  } catch (error) {
-    toast({
-      title: "Error",
-      description: "An error occurred during login.",
-      variant: "destructive",
-    });
-  } finally {
-    setIsLoading(false);
-  }
-};
 
+    setIsLoading(true);
 
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          phone: formData.phone,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.user) {
+        // ✅ Store user + token
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("token", data.token);
+
+        toast({
+          title: "Welcome back!",
+          description: "You have successfully logged in.",
+        });
+
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 800);
+      } else {
+        toast({
+          title: "Login Failed",
+          description: data.error || "Invalid credentials",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An error occurred during login.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -88,6 +114,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* ✅ PHONE INPUT WITH VALIDATION */}
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number</Label>
                 <Input
@@ -95,9 +122,12 @@ const handleSubmit = async (e: React.FormEvent) => {
                   type="tel"
                   placeholder="+2348123456789"
                   value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  onChange={handlePhoneChange}
                   required
+                  maxLength={14}
+                  className={phoneError ? "border-red-500 focus-visible:ring-red-500" : ""}
                 />
+                {phoneError && <p className="text-sm text-red-500">{phoneError}</p>}
               </div>
 
               <div className="space-y-2">
@@ -141,7 +171,5 @@ const handleSubmit = async (e: React.FormEvent) => {
     </div>
   );
 };
-
-
 
 export default Login;

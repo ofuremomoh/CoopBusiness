@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,63 +24,90 @@ const Register = () => {
     confirmPassword: "",
     user_type: "individual",
   });
+  const [phoneError, setPhoneError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const validatePhone = (phone) => {
+    const pattern = /^\+234[0-9]{10}$/;
+    return pattern.test(phone);
+  };
 
-  if (formData.password !== formData.confirmPassword) {
-    toast({
-      title: "Password Mismatch",
-      description: "Passwords do not match. Please try again.",
-      variant: "destructive",
-    });
-    return;
-  }
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    setFormData({ ...formData, phone: value });
 
-  setIsLoading(true);
-
-  try {
-    const response = await fetch("http://127.0.0.1:5000/api/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: formData.name,
-        phone: formData.phone,
-        email: formData.email,
-        password: formData.password,
-        user_type: formData.user_type,
-      }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok && data.user_id) {
-      toast({
-        title: "Registration Successful!",
-        description: "Please log in with your credentials.",
-      });
-
-      navigate("/login");
+    if (value === "") {
+      setPhoneError("Phone number is required");
+    } else if (!validatePhone(value)) {
+      setPhoneError("Enter a valid number e.g. +2348123456789");
     } else {
+      setPhoneError("");
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validate phone format before submitting
+    if (!validatePhone(formData.phone)) {
       toast({
-        title: "Registration Failed",
-        description: data.error || "Please try again.",
+        title: "Invalid Phone Number",
+        description: "Phone number must be in the format +234XXXXXXXXXX.",
         variant: "destructive",
       });
+      return;
     }
-  } catch (error) {
-    toast({
-      title: "Error",
-      description: "An error occurred during registration.",
-      variant: "destructive",
-    });
-  } finally {
-    setIsLoading(false);
-  }
-};
 
+    if (formData.password !== formData.confirmPassword) {
+      toast({
+        title: "Password Mismatch",
+        description: "Passwords do not match. Please try again.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          password: formData.password,
+          user_type: formData.user_type,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.user_id) {
+        toast({
+          title: "Registration Successful!",
+          description: "Please log in with your credentials.",
+        });
+        navigate("/login");
+      } else {
+        toast({
+          title: "Registration Failed",
+          description: data.error || "Please try again.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An error occurred during registration.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -111,6 +137,7 @@ const Register = () => {
                   />
                 </div>
 
+                {/* ✅ PHONE VALIDATION FIELD */}
                 <div className="space-y-2">
                   <Label htmlFor="phone">Phone Number</Label>
                   <Input
@@ -118,9 +145,12 @@ const Register = () => {
                     type="tel"
                     placeholder="+2348123456789"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={handlePhoneChange}
                     required
+                    maxLength={14}
+                    className={phoneError ? "border-red-500 focus-visible:ring-red-500" : ""}
                   />
+                  {phoneError && <p className="text-sm text-red-500">{phoneError}</p>}
                 </div>
 
                 <div className="space-y-2">
@@ -152,12 +182,15 @@ const Register = () => {
                     id="confirmPassword"
                     type="password"
                     value={formData.confirmPassword}
-                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, confirmPassword: e.target.value })
+                    }
                     required
                   />
                 </div>
               </div>
 
+              {/* Rest of your form unchanged */}
               <div className="space-y-3">
                 <Label>Account Type</Label>
                 <RadioGroup
@@ -172,7 +205,9 @@ const Register = () => {
                       <RadioGroupItem value={type} id={type} />
                       <Label htmlFor={type} className="flex-1 cursor-pointer">
                         <div className="flex items-center justify-between">
-                          <span className="font-semibold">{USER_TYPE_LABELS[type as keyof typeof USER_TYPE_LABELS]}</span>
+                          <span className="font-semibold">
+                            {USER_TYPE_LABELS[type as keyof typeof USER_TYPE_LABELS]}
+                          </span>
                           <Badge variant="secondary">
                             {loyalty.toLocaleString()} Loyalty Points
                           </Badge>

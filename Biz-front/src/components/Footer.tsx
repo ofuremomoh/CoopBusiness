@@ -1,4 +1,4 @@
-import { Blocks } from "lucide-react";
+import marketplaceImg from "@/assets/logo.png"; 
 
 const Footer = () => {
   return (
@@ -7,10 +7,17 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                <Blocks className="w-5 h-5 text-white" />
+              <div >
+
+
+          <img
+            src={marketplaceImg}
+            alt="Marketplace"
+            className="w-6 h-6 object-contain"
+          />
+
               </div>
-              <span className="font-bold text-lg">Coop Business</span>
+              <span className="font-bold text-lg">Coop Mart</span>
             </div>
             <p className="text-sm text-muted-foreground">
               Building Nigeria's economic future through blockchain-powered rewards
@@ -48,7 +55,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground">
-          <p>© 2025 Coop Business. All rights reserved. Empowering Nigerian commerce.</p>
+          <p>© 2025 Just Reach LLC Delaware, USA . All rights reserved. Empowering Nigerian commerce.</p>
         </div>
       </div>
     </footer>

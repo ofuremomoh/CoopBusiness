@@ -20,7 +20,10 @@ import {
 const Marketplace = () => {
   const [searchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<
+  { name: string; subcategories: string[] }[]
+>([]);
+
   const [selectedCategory, setSelectedCategory] = useState<string>(
     searchParams.get("category") || "all"
   );
@@ -34,19 +37,89 @@ const Marketplace = () => {
         
         // Hardcoded categories since backend doesn't provide them
         const hardcodedCategories = [
-          "Electronics",
-          "Fashion",
-          "Home & Garden",
-          "Sports",
-          "Books",
-          "Toys",
-          "Food & Beverages",
-          "Health & Beauty",
-          "Automotive",
-          "Other"
-        ];
+  {
+    name: "Raw Materials",
+    subcategories: [
+      "Agricultural Produce",
+      "Minerals & Natural Stones",
+      "Chemicals & Dyes",
+      "Industrial Oils & Lubricants",
+      "Scraps & Recyclables",
+    ],
+  },
+  {
+    name: "Intermediate Goods",
+    subcategories: [
+      "Building Materials",
+      "Metals & Alloys",
+      "Rubber & Plastic Components",
+      "Wood & Furniture Parts",
+      "Textile & Leather Materials",
+      "Electrical Components",
+      "Machined Parts & Tools",
+    ],
+  },
+  {
+    name: "Technology & Equipment",
+    subcategories: [
+      "Fabrication Machines",
+      "Industrial Tools",
+      "Electronics & Circuit Boards",
+      "Engines & Motors",
+      "Power & Energy Equipment",
+      "ICT Devices & Peripherals",
+      "Automation & Robotics",
+      "Repair Tools & Accessories",
+    ],
+  },
+  {
+    name: "Consumables",
+    subcategories: [
+      "Kitchen & Food Supplies",
+      "Toiletries & Sanitation",
+      "Paper & Stationery",
+      "Beauty & Personal Care",
+      "Plastic & Packaging Materials",
+      "Home & Living Essentials",
+      "Healthcare & Sanitary Products",
+      "Others",
+    ],
+  },
+  {
+    name: "Supplies",
+    subcategories: [
+      "Office Supplies",
+      "School Supplies",
+      "Workshop & Craft Supplies",
+      "Agricultural Supplies",
+      "Industrial Maintenance Items",
+    ],
+  },
+  {
+    name: "Fashion & Clothing",
+    subcategories: [
+      "Equipment & Sewing Tools",
+      "Fabrics & Materials",
+      "Footwear & Leatherworks",
+      "Accessories & Ornaments",
+      "Ready-to-Wear Items",
+    ],
+  },
+  {
+    name: "Services",
+    subcategories: [
+      "Fabrication & Repair",
+      "Printing & Packaging",
+      "Delivery & Logistics",
+      "Design & Branding",
+      "Installation & Maintenance",
+      "Training & Consultancy",
+    ],
+  },
+];
         
         setCategories(hardcodedCategories);
+  
         setProducts(productsData);
       } catch (error) {
         console.error("Error fetching marketplace data:", error);
@@ -94,10 +167,10 @@ const Marketplace = () => {
                 <SelectContent>
                   <SelectItem value="all">All Categories</SelectItem>
                   {categories.map((category) => (
-                    <SelectItem key={category} value={category}>
-                      {category}
-                    </SelectItem>
-                  ))}
+  <SelectItem key={category.name} value={category.name}>
+    {category.name}
+  </SelectItem>
+))}
                 </SelectContent>
               </Select>
             </div>

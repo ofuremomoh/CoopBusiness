@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Blocks, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import marketplaceImg from "@/assets/logo.png"; 
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,11 +25,14 @@ const Navbar = () => {
             className="flex items-center gap-2 cursor-pointer group"
             onClick={() => navigate("/")}
           >
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center group-hover:shadow-glow transition-all">
-              <Blocks className="w-6 h-6 text-white" />
-            </div>
+                      <img
+                        src={marketplaceImg}
+                        alt="Marketplace"
+                        className="w-6 h-6 object-contain"
+                      />
+         
             <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Coop Business
+              Coop Mart
             </span>
           </div>
 

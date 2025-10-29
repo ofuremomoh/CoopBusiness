@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv("PAYSTACK_SECRET")
 class Config:
     # Core App Settings
     SECRET_KEY = SECRET_KEY
-    SQLALCHEMY_DATABASE_URI = "postgresql://coopsocial_adnp_user:PeFnsqniNLkuKG0fHBBX6ZQF57BR3ytV@dpg-d3m0g37diees73a884ig-a.oregon-postgres.render.com/coopsocial_adnp"
+    SQLALCHEMY_DATABASE_URI = "postgresql://coopmart_user:jN8kplLNbpHAjdrjUfHwRBe7UXv75R1q@dpg-d411rv2li9vc73c2hqvg-a.oregon-postgres.render.com/coopmart"
     #SQLALCHEMY_DATABASE_URI = "postgresql://postgres:YardCore94!@localhost:5432/cobiz"
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False

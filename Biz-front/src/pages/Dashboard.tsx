@@ -112,7 +112,7 @@ const Dashboard = () => {
           </div>
 
           {/* Wallet Overview Cards */}
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
             <Card className="p-6 bg-gradient-to-br from-primary/5 to-primary/10 border-2 border-primary/20">
               <div className="flex items-start justify-between mb-4">
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -139,29 +139,13 @@ const Dashboard = () => {
               </div>
             </Card>
 
-            <Card className="p-6 bg-gradient-to-br from-secondary/5 to-secondary/10 border-2 border-secondary/20">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-secondary" />
-                </div>
-                <Badge variant="outline">Sales Power</Badge>
-              </div>
-              <div>
-                <p className="text-3xl font-bold mb-1">
-                  ₦{maxSalesPower.toLocaleString()}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Maximum listing value (10x)
-                </p>
-              </div>
-            </Card>
 
             <Card className="p-6 bg-gradient-to-br from-accent/5 to-accent/10 border-2 border-accent/20">
               <div className="flex items-start justify-between mb-4">
                 <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
                   <WalletIcon className="w-6 h-6 text-accent" />
                 </div>
-                <Badge variant="outline">Fiat Balance</Badge>
+                <Badge variant="outline">Naira Balance</Badge>
               </div>
               <div>
                 <p className="text-3xl font-bold mb-1">

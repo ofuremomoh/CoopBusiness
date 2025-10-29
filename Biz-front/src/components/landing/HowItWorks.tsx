@@ -4,26 +4,26 @@ import { UserPlus, ShoppingCart, Coins, Award } from "lucide-react";
 const steps = [
   {
     icon: UserPlus,
-    title: "Register & Get Loyalty",
-    description: "Sign up and receive initial Loyalty allocation (₦100k for individuals, ₦500k for ventures, ₦1M for companies). This is your selling power!",
+    title: "Register & Get Loyalty Wallet",
+    description: "Get loyalty rewards on purchases you make and pay loyalty to your buyers from your loyalty wallet. Make sure your loyalty wallet is funded for the amount of sales you wish to make.",
     color: "primary",
   },
   {
     icon: ShoppingCart,
-    title: "Buy & Earn Rewards",
-    description: "Purchase products from sellers and automatically earn 20% of the purchase value in Loyalty. 10% comes from the seller, 10% is newly mined.",
+    title: "Cash Transactions",
+    description: "Cash transactions occur when a buyer pays from his designated bank account for items on the marketplace. ",
     color: "secondary",
   },
   {
     icon: Coins,
-    title: "Sell Products",
-    description: "List products at up to 10x your Loyalty balance. When buyers purchase, you receive full payment while 10% of your Loyalty transfers to buyers.",
+    title: "Loyalty Transactions",
+    description: "Buyers can make purchases with their loyalty wallet to the seller's account.",
     color: "accent",
   },
   {
     icon: Award,
-    title: "Transfer to Cash",
-    description: "All earned Loyalty (from purchases and mining) can be transferred to your fiat wallet immediately!",
+    title: "Seller Remittances",
+    description: "for cash transactions, seller gets 100% of the sales value into his bank account having paid 10% into buyer's wallet. While for loyalty transactions, seller gets 50% of the value into his bank account and 50% into his loyalty account and pays no loyalty fee.",
     color: "primary",
   },
 ];
@@ -59,20 +59,6 @@ const HowItWorks = () => {
           })}
         </div>
 
-        <div className="mt-16 max-w-4xl mx-auto">
-          <Card className="p-8 bg-gradient-to-br from-primary/5 to-accent/5 border-2 border-primary/20">
-            <h3 className="text-2xl font-bold mb-4 text-center">Important: Understanding Your Initial Loyalty</h3>
-            <div className="space-y-4 text-muted-foreground">
-              <p className="text-center text-lg">
-                Your initial Loyalty allocation is your <strong className="text-foreground">selling power</strong>, not cash. 
-                You can use it to create sales up to 10x its value.
-              </p>
-              <p className="text-center text-lg">
-                <strong className="text-foreground">Good news:</strong> All Loyalty you earn from purchases can be transferred to cash immediately! 
-              </p>
-            </div>
-          </Card>
-        </div>
       </div>
     </section>
   );
