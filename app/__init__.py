@@ -65,7 +65,9 @@ SQLALCHEMY_ENGINE_OPTIONS = {
 
 #UPLOAD_FOLDER = 'C:/Users/DELL/Documents/My Dev Files/cobiz/uploads' 
 
-UPLOAD_FOLDER = "/data/business_assets"
+UPLOAD_FOLDER = "uploads"
+
+#UPLOAD_FOLDER = "/data/business_assets"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 USER_FOLDER='user_folder'

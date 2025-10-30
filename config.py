@@ -7,7 +7,8 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 #UPLOAD_FOLDER = 'C:/Users/DELL/Documents/My Dev Files/Co/demo'  # Must match the disk mount path
 #UPLOAD_FOLDER = 'C:/Users/DELL/Documents/My Dev Files/cobiz/uploads' 
-UPLOAD_FOLDER = "/data/business_assets"
+#UPLOAD_FOLDER = "/data/business_assets"
+UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 USER_FOLDER = 'user_folder'
@@ -29,8 +30,8 @@ SECRET_KEY = os.getenv("PAYSTACK_SECRET")
 class Config:
     # Core App Settings
     SECRET_KEY = SECRET_KEY
-    SQLALCHEMY_DATABASE_URI = "postgresql://coopmart_user:jN8kplLNbpHAjdrjUfHwRBe7UXv75R1q@dpg-d411rv2li9vc73c2hqvg-a.oregon-postgres.render.com/coopmart"
-    #SQLALCHEMY_DATABASE_URI = "postgresql://postgres:YardCore94!@localhost:5432/cobiz"
+    #SQLALCHEMY_DATABASE_URI = "postgresql://coopmart_user:jN8kplLNbpHAjdrjUfHwRBe7UXv75R1q@dpg-d411rv2li9vc73c2hqvg-a.oregon-postgres.render.com/coopmart"
+    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:YardCore94!@localhost:5432/cobiz"
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # Pagination
